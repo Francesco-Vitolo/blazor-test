@@ -1,0 +1,36 @@
+﻿@page "/"
+@using ErgastApi.Responses.Models;
+
+<h1> Moin  </h1>
+<button style="height:80px;width:80px" @onclick="Refresh">Refresh</button>
+
+@code
+{
+    protected override async Task OnInitializedAsync()
+    {
+        Refresh();
+    }
+
+    Driver[] Pilots;
+    public async void Refresh()
+    {
+        Pilots = await DriverInfo.GetDriverInfo();
+    }
+}
+
+@if (Pilots != null)
+{
+
+    foreach (var pilot in Pilots)
+    {
+        DateTime t = Convert.ToDateTime(pilot.DateOfBirth);
+        <tr>
+            <td style="font-weight:bold;">@pilot.Code</td>
+            <td >@pilot.FirstName</td>
+            <td>@pilot.LastName</td>
+            <td>@t.ToString("dd-MM-yyyy")</td>
+            <td>@pilot.Nationality</td>
+            <td>@pilot.WikiUrl</td>
+        </tr>
+    }
+}
